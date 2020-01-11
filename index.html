@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>--==[ HC ]==--</title>
+    <link rel="icon" type="image/png" href="material-kit/assets/img/favicon.png">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- Material Kit CSS -->
+    <link href="material-kit/assets/css/material-kit.css?v=2.2.0" rel="stylesheet" />
+    <!-- Mock data -->
+    <script>
+        hcData = {
+            "Demographics": {
+                "lastName": "Bourne",
+                "firstName": "Jason",
+                "dob": "April 20, 1970 (49)",
+                "gender": "Male",
+                "identifiesAs": "Male",
+                "weight": "84.3 kgs (186 lbs)",
+                "height": "178 cm (5' 10\")",
+                "photo": "material-kit/assets/img/OntDriversLicense.jpg",
+                "conditions": [
+                    " Osteoarthritis",
+                    " Insomnia",
+                    " Hypertension",
+                ],
+                "contraindications": [
+                    "Percocets 2012-2014",
+                ],
+            },
+            "Clinical": {
+                "prescribingHCP": "Dr. Mary Smith",
+                "clinic": "Wise Elephant FHT",
+                "prescriptions": {
+                    "strain": "Sativa",
+                    "format": "dried",
+                    "cbdPercent": "15",
+                    "thcPercent": "5",
+                },
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+
+    <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+        <div class="card-body ">
+            <div class="row">
+                <div class="">
+                    <button class="" data-toggle="modal" data-target="#smallAlertModal" style="border-width: 0px;">
+                        <div class="author">
+                            <img id="hc_photoSml" src="" class="avatar img-raised"
+                                style="width: 55px; height: 55px;">
+                        </div>
+                    </button>
+                    <!-- modal large photo -->
+                    <div class="modal fade" id="smallAlertModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-small" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                            class="material-icons">clear</i></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    <img id="hc_photoLrg" src="" class="avatar img-raised"
+                                        style="width: 250px; height: 250px;"></br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end modal -->
+                </div>
+                <div class="col-10">
+                    <div class="row">
+                        <div class="col-12">
+                            <span><span id="hc_name"></span>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>DOB:</b> <span id="hc_dob"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Gender (at birth):</b> <span id="hc_gender"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Identifies as:</b> <span id="hc_identifiesAs"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Weight:</b> <span id="hc_weight"></span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Height:</b> <span id="hc_height"></span>
+                            </span>
+                        </div>
+                        <div class="col-12">
+
+                            <span>
+                                <i class="material-icons" style="  margin: 0;position: relative;top: 8px;"> healing</i>
+                                <b>Condition(s):</b> <span id="hc_conditions"></span>
+                            </span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>
+                                <i class="material-icons" style="  margin: 0;position: relative;top: 8px;"> warning</i>
+                                <b>Possible contraindication(s):</b> <span id="hc_contraindications"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card" style="margin-top: 0px;">
+        <div class="card-body " style="background-color: rgb(235, 241, 216);">
+            <div class="row">
+                <div class="col-sm-auto">
+                    <b>Rx:</b> <span id="hc_prescribingHCP"></span> </br>
+                    &nbsp; <span id="hc_clinic"></span>
+                </div>
+
+                <div class="col-sm-auto">
+                    <div class="row">
+                        <div class="col">
+                            <b>Strain:</b> <span id="hc_strain"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            [ ] Sativa [ ] Indica [ ] Hybrid
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="row">
+                        <div class="col">
+                            <b>CBD% &gt; :</b> <span id="hc_cbdPercent"></span>%
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            [---*-------------]
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="row">
+                        <div class="col">
+                            <b>THC% &lt; :</b> <span id="hc_thcPercent"></span>%
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            [---*-------------]
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-auto">
+                    <div class="row">
+                        <div class="col">
+                            <b>Format:</b> <span id="hc_format"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Dried, oil, decarb, blend, Softgels, Dissolve strips
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-auto align-self-end">
+                    <b>xxx &gt; :</b> yyy
+                </div>
+            </div>
+
+            <div class="card-footer " style="background-color: rgb(224, 233, 196);">
+                <div class="stats ml-auto">
+                    <i class="material-icons">filters</i> filters
+                </div>
+            </div>
+        </div>
+
+
+        <div class="page-header header-filter" data-parallax="true"
+            style="background-image: url('material-kit/assets/img/bg3.jpg')">
+            <div class="container">
+                <div class="main main-raised">
+                    <div class="section text-center">
+                        <h2 class="title">Your main section here</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header header-filter" data-parallax="true" style="background-image: url('material-kit/assets/img/bg3.jpg')">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto">
+                        <div class="brand text-center">
+                            <h1>Your title here</h1>
+                            <h3 class="title text-center">Subtitle</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Populate fields -->
+        <script>
+            function hc_populate(fld, val) {
+                document.getElementById(fld).innerHTML = val;
+            }
+            hc_populate("hc_name", hcData.Demographics.lastName + ", " + hcData.Demographics.firstName);
+            hc_populate("hc_dob", hcData.Demographics.dob);
+            hc_populate("hc_gender", hcData.Demographics.gender);
+            hc_populate("hc_identifiesAs", hcData.Demographics.identifiesAs);
+            hc_populate("hc_height", hcData.Demographics.height);
+            hc_populate("hc_weight", hcData.Demographics.weight);
+            hc_populate("hc_conditions", hcData.Demographics.conditions);
+            hc_populate("hc_contraindications", hcData.Demographics.contraindications);
+            document.getElementById("hc_photoSml").src = hcData.Demographics.photo;
+            document.getElementById("hc_photoLrg").src = hcData.Demographics.photo;
+            hc_populate("hc_prescribingHCP", hcData.Clinical.prescribingHCP);
+            hc_populate("hc_clinic", hcData.Clinical.clinic);
+            hc_populate("hc_strain", hcData.Clinical.prescriptions.strain);
+            hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
+            hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
+            hc_populate("hc_format", hcData.Clinical.prescriptions.format);
+        </script>
+
+        <!--   Core JS Files   -->
+        <script src="material-kit/assets/js/core/jquery.min.js" type="text/javascript"></script>
+        <script src="material-kit/assets/js/core/popper.min.js" type="text/javascript"></script>
+        <script src="material-kit/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+        <script src="material-kit/assets/js/plugins/moment.min.js"></script>
+        <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+        <script src="material-kit/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+        <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+        <script src="material-kit/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+        <!--  Google Maps Plugin  -->
+        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
+        <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+        <script src="material-kit/assets/js/plugins/bootstrap-tagsinput.js"></script>
+        <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+        <script src="material-kit/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+        <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+        <script src="material-kit/assets/js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
+        <!-- Place this tag in your head or just before your close body tag. -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+        <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+        <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+</body>
+
+</html>
