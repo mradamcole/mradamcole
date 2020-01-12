@@ -8,9 +8,8 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <!--     Fonts and icons     -->
-    <link rel="stylesheet" type="text/css"
-        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <!-- Fonts and icons -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- Material Kit CSS -->
     <link href="material-kit/assets/css/material-kit.css?v=2.2.0" rel="stylesheet" />
@@ -22,7 +21,7 @@
                 "firstName": "Jason",
                 "dob": "April 20, 1970 (49)",
                 "gender": "Male",
-                "identifiesAs": "Male",
+                "identifiesAs": "They",
                 "weight": "84.3 kgs (186 lbs)",
                 "height": "178 cm (5' 10\")",
                 "photo": "material-kit/assets/img/OntDriversLicense.jpg",
@@ -49,7 +48,7 @@
     </script>
 </head>
 
-<body>
+<body onload="onLoadReady()">
 
 
     <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
@@ -58,8 +57,7 @@
                 <div class="">
                     <button class="" data-toggle="modal" data-target="#smallAlertModal" style="border-width: 0px;">
                         <div class="author">
-                            <img id="hc_photoSml" src="" class="avatar img-raised"
-                                style="width: 55px; height: 55px;">
+                            <img id="hc_photoSml" src="" class="avatar img-raised" style="width: 55px; height: 55px;">
                         </div>
                     </button>
                     <!-- modal large photo -->
@@ -67,12 +65,10 @@
                         <div class="modal-dialog modal-small" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
-                                            class="material-icons">clear</i></button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <img id="hc_photoLrg" src="" class="avatar img-raised"
-                                        style="width: 250px; height: 250px;"></br>
+                                    <img id="hc_photoLrg" src="" class="avatar img-raised" style="width: 250px; height: 250px;"></br>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +82,9 @@
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>DOB:</b> <span id="hc_dob"></span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Gender (at birth):</b> <span id="hc_gender"></span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Identifies as:</b> <span id="hc_identifiesAs"></span>
+                                <span id="hc_identifiesAsContainer">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Identifies as:</b> <span id="hc_identifiesAs"></span>
+                                </span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Weight:</b> <span id="hc_weight"></span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Height:</b> <span id="hc_height"></span>
                             </span>
@@ -126,31 +124,56 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            [ ] Sativa [ ] Indica [ ] Hybrid
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_strainIndica" value="option1">Indica&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_strainSativa" value="option2">Sativa&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_strainHybrid" value="option3">Hybrid&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-auto">
                     <div class="row">
                         <div class="col">
-                            <b>CBD% &gt; :</b> <span id="hc_cbdPercent"></span>%
+                            <b>CBD% &gt; </b> (<span id="hc_cbdPercent"></span>%)
+                            <input id="hc_sliderCBDVal" style="width:35px; height:25px;">%
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            [---*-------------]
+                        <div class="col" style="width: 200px;">
+                            <div id="hc_sliderCBDControl" class="slider"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-auto">
                     <div class="row">
                         <div class="col">
-                            <b>THC% &lt; :</b> <span id="hc_thcPercent"></span>%
+                            <b>THC% &lt; </b> (<span id="hc_thcPercent"></span>%)
+                            <input id="hc_sliderTHCVal" style="width:35px; height:25px;">%
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            [---*-------------]
+                        <div class="col" style="width: 200px;">
+                            <div id="hc_sliderTHCControl" class="slider"></div>
                         </div>
                     </div>
                 </div>
@@ -179,29 +202,21 @@
         </div>
 
 
-        <div class="page-header header-filter" data-parallax="true"
-            style="background-image: url('material-kit/assets/img/bg3.jpg')">
-            <div class="container">
-                <div class="main main-raised">
-                    <div class="section text-center">
-                        <h2 class="title">Your main section here</h2>
-                    </div>
+        <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+            <div class="card-header" role="tab" id="headingOne" style="padding: 5px 5px 5px 5px;">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Medication History
+                    <i class="material-icons">keyboard_arrow_down</i>
+                </a>
+            </div>
+            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-body">
+                    [[ List of MedHx ]]
                 </div>
             </div>
         </div>
 
-        <div class="page-header header-filter" data-parallax="true" style="background-image: url('material-kit/assets/img/bg3.jpg')">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-8 ml-auto mr-auto">
-                        <div class="brand text-center">
-                            <h1>Your title here</h1>
-                            <h3 class="title text-center">Subtitle</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
 
         <!-- Populate fields -->
@@ -225,6 +240,63 @@
             hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
             hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
             hc_populate("hc_format", hcData.Clinical.prescriptions.format);
+            if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
+                document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
+            }
+            switch (hcData.Clinical.prescriptions.strain) {
+                case "Indica":
+                    document.getElementById("hc_strainIndica").checked = true;
+                    break;
+                case "Sativa":
+                    document.getElementById("hc_strainSativa").checked = true;
+                    break;
+                case "Hybrid":
+                    document.getElementById("hc_strainHybrid").checked = true;
+            }
+            //Some features are not available until all the libraries have loaded
+            function onLoadReady() {
+
+                //CBD Slider
+                var hc_sliderCBD = document.getElementById('hc_sliderCBDControl');
+                noUiSlider.create(hc_sliderCBD, {
+                    start: 0,
+                    connect: [false, true],
+                    step: 5,
+                    range: {
+                        min: 0,
+                        max: 100
+                    }
+                });
+                hc_sliderCBD.noUiSlider.set(hcData.Clinical.prescriptions.cbdPercent);
+                var hc_sliderCBDVal = document.getElementById('hc_sliderCBDVal');
+                hc_sliderCBD.noUiSlider.on('update', function (values, handle) {
+                    hc_sliderCBDVal.value = values[handle] * 1;
+                });
+                hc_sliderCBDVal.addEventListener('change', function () {
+                    hc_sliderCBD.noUiSlider.set(this.value);
+                });
+
+                //THC Slider
+                var hc_sliderTHC = document.getElementById('hc_sliderTHCControl');
+                noUiSlider.create(hc_sliderTHC, {
+                    start: 0,
+                    connect: [true, false],
+                    step: 5,
+                    range: {
+                        min: 0,
+                        max: 100
+                    }
+                });
+                hc_sliderTHC.noUiSlider.set(hcData.Clinical.prescriptions.thcPercent);
+                var hc_sliderTHCVal = document.getElementById('hc_sliderTHCVal');
+                hc_sliderTHC.noUiSlider.on('update', function (values, handle) {
+                    hc_sliderTHCVal.value = values[handle] * 1;
+                });
+                hc_sliderTHCVal.addEventListener('change', function () {
+                    hc_sliderTHC.noUiSlider.set(this.value);
+                });
+
+            };
         </script>
 
         <!--   Core JS Files   -->
