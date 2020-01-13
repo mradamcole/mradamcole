@@ -116,7 +116,7 @@
                     &nbsp; <span id="hc_clinic"></span>
                 </div>
 
-                <div class="col-sm-auto">
+                <div class="col-md-auto">
                     <div class="row">
                         <div class="col">
                             <b>Strain:</b> <span id="hc_strain"></span>
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-auto">
+                <div class="col-md-2">
                     <div class="row">
                         <div class="col">
                             <b>CBD% &gt; </b> (<span id="hc_cbdPercent"></span>%)
@@ -159,12 +159,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col" style="width: 200px;">
+                        <div class="col" style="min-width: 200px;">
                             <div id="hc_sliderCBDControl" class="slider"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-auto">
+                <div class="col-md-2">
                     <div class="row">
                         <div class="col">
                             <b>THC% &lt; </b> (<span id="hc_thcPercent"></span>%)
@@ -172,12 +172,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col" style="width: 200px;">
+                        <div class="col" style="min-width: 200px;">
                             <div id="hc_sliderTHCControl" class="slider"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-auto">
+                <div class="col-md-auto">
                     <div class="row">
                         <div class="col">
                             <b>Format:</b> <span id="hc_format"></span>
@@ -185,12 +185,48 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            Dried, oil, decarb, blend, Softgels, Dissolve strips
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_formatDried" value="option1">Dried&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_formatCapsule" value="option2">Capsule&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_formatOil" value="option3">Oil&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_formatTopical" value="option2">Topical&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_formatEdible" value="option3">Edible&nbsp;&nbsp;
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-auto align-self-end">
-                    <b>xxx &gt; :</b> yyy
                 </div>
             </div>
 
@@ -252,6 +288,22 @@
                     break;
                 case "Hybrid":
                     document.getElementById("hc_strainHybrid").checked = true;
+            }
+            switch (hcData.Clinical.prescriptions.format) {
+                case "dried":
+                    document.getElementById("hc_formatDried").checked = true;
+                    break;
+                case "capsule":
+                    document.getElementById("hc_formatCapsule").checked = true;
+                    break;
+                case "oil":
+                    document.getElementById("hc_formatOil").checked = true;
+                    break;
+                case "edible":
+                    document.getElementById("hc_formatEdible").checked = true;
+                    break;
+                case "topical":
+                    document.getElementById("hc_formatTopical").checked = true;
             }
             //Some features are not available until all the libraries have loaded
             function onLoadReady() {
