@@ -50,13 +50,12 @@
 
 <body onload="onLoadReady()">
 
-
-    <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+    <div class="card" style="margin-top: 0px; margin-bottom: 0px; background-color: #eee;">
         <div class="card-body ">
             <div class="row">
                 <div class="">
-                    <button class="" data-toggle="modal" data-target="#smallAlertModal" style="border-width: 0px;">
-                        <div class="author">
+                    <button class="" data-toggle="modal" data-target="#smallAlertModal" style="border-width: 0px; background-color: #eee;">
+                        <div class="author" style="background-color: #eee;">
                             <img id="hc_photoSml" src="" class="avatar img-raised" style="width: 55px; height: 55px;">
                         </div>
                     </button>
@@ -109,7 +108,7 @@
 
 
     <div class="card" style="margin-top: 0px;">
-        <div class="card-body " style="background-color: rgb(235, 241, 216);">
+        <div class="card-body " style="background-color: #ffffff;">
             <div class="row">
                 <div class="col-sm-auto">
                     <b>Rx:</b> <span id="hc_prescribingHCP"></span> </br>
@@ -229,149 +228,141 @@
                     </div>
                 </div>
             </div>
-
-            <div class="card-footer " style="background-color: rgb(224, 233, 196);">
-                <div class="stats ml-auto">
-                    <i class="material-icons">filters</i> filters
+            <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+                <div class="card-header" role="tab" id="headingTwox" style="padding: 5px;">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        filters
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                </div>
+                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwox">
+                    <div class="card-body">
+                        [[ filters ]]
+                    </div>
                 </div>
             </div>
         </div>
 
-
-        <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
-            <div class="card-header" role="tab" id="headingOne" style="padding: 5px 5px 5px 5px;">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    Medication History
-                    <i class="material-icons">keyboard_arrow_down</i>
-                </a>
-            </div>
-            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                <div class="card-body">
-                    [[ List of MedHx ]]
-                </div>
-            </div>
-        </div>
+    </div>
 
 
+    <!-- Populate fields -->
+    <script>
+        function hc_populate(fld, val) {
+            document.getElementById(fld).innerHTML = val;
+        }
+        hc_populate("hc_name", hcData.Demographics.lastName + ", " + hcData.Demographics.firstName);
+        hc_populate("hc_dob", hcData.Demographics.dob);
+        hc_populate("hc_gender", hcData.Demographics.gender);
+        hc_populate("hc_identifiesAs", hcData.Demographics.identifiesAs);
+        hc_populate("hc_height", hcData.Demographics.height);
+        hc_populate("hc_weight", hcData.Demographics.weight);
+        hc_populate("hc_conditions", hcData.Demographics.conditions);
+        hc_populate("hc_contraindications", hcData.Demographics.contraindications);
+        document.getElementById("hc_photoSml").src = hcData.Demographics.photo;
+        document.getElementById("hc_photoLrg").src = hcData.Demographics.photo;
+        hc_populate("hc_prescribingHCP", hcData.Clinical.prescribingHCP);
+        hc_populate("hc_clinic", hcData.Clinical.clinic);
+        hc_populate("hc_strain", hcData.Clinical.prescriptions.strain);
+        hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
+        hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
+        hc_populate("hc_format", hcData.Clinical.prescriptions.format);
+        if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
+            document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
+        }
+        switch (hcData.Clinical.prescriptions.strain) {
+            case "Indica":
+                document.getElementById("hc_strainIndica").checked = true;
+                break;
+            case "Sativa":
+                document.getElementById("hc_strainSativa").checked = true;
+                break;
+            case "Hybrid":
+                document.getElementById("hc_strainHybrid").checked = true;
+        }
+        switch (hcData.Clinical.prescriptions.format) {
+            case "dried":
+                document.getElementById("hc_formatDried").checked = true;
+                break;
+            case "capsule":
+                document.getElementById("hc_formatCapsule").checked = true;
+                break;
+            case "oil":
+                document.getElementById("hc_formatOil").checked = true;
+                break;
+            case "edible":
+                document.getElementById("hc_formatEdible").checked = true;
+                break;
+            case "topical":
+                document.getElementById("hc_formatTopical").checked = true;
+        }
+        //Some features are not available until all the libraries have loaded
+        function onLoadReady() {
 
+            //CBD Slider
+            var hc_sliderCBD = document.getElementById('hc_sliderCBDControl');
+            noUiSlider.create(hc_sliderCBD, {
+                start: 0,
+                connect: [false, true],
+                step: 5,
+                range: {
+                    min: 0,
+                    max: 100
+                }
+            });
+            hc_sliderCBD.noUiSlider.set(hcData.Clinical.prescriptions.cbdPercent);
+            var hc_sliderCBDVal = document.getElementById('hc_sliderCBDVal');
+            hc_sliderCBD.noUiSlider.on('update', function (values, handle) {
+                hc_sliderCBDVal.value = values[handle] * 1;
+            });
+            hc_sliderCBDVal.addEventListener('change', function () {
+                hc_sliderCBD.noUiSlider.set(this.value);
+            });
 
-        <!-- Populate fields -->
-        <script>
-            function hc_populate(fld, val) {
-                document.getElementById(fld).innerHTML = val;
-            }
-            hc_populate("hc_name", hcData.Demographics.lastName + ", " + hcData.Demographics.firstName);
-            hc_populate("hc_dob", hcData.Demographics.dob);
-            hc_populate("hc_gender", hcData.Demographics.gender);
-            hc_populate("hc_identifiesAs", hcData.Demographics.identifiesAs);
-            hc_populate("hc_height", hcData.Demographics.height);
-            hc_populate("hc_weight", hcData.Demographics.weight);
-            hc_populate("hc_conditions", hcData.Demographics.conditions);
-            hc_populate("hc_contraindications", hcData.Demographics.contraindications);
-            document.getElementById("hc_photoSml").src = hcData.Demographics.photo;
-            document.getElementById("hc_photoLrg").src = hcData.Demographics.photo;
-            hc_populate("hc_prescribingHCP", hcData.Clinical.prescribingHCP);
-            hc_populate("hc_clinic", hcData.Clinical.clinic);
-            hc_populate("hc_strain", hcData.Clinical.prescriptions.strain);
-            hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
-            hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
-            hc_populate("hc_format", hcData.Clinical.prescriptions.format);
-            if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
-                document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
-            }
-            switch (hcData.Clinical.prescriptions.strain) {
-                case "Indica":
-                    document.getElementById("hc_strainIndica").checked = true;
-                    break;
-                case "Sativa":
-                    document.getElementById("hc_strainSativa").checked = true;
-                    break;
-                case "Hybrid":
-                    document.getElementById("hc_strainHybrid").checked = true;
-            }
-            switch (hcData.Clinical.prescriptions.format) {
-                case "dried":
-                    document.getElementById("hc_formatDried").checked = true;
-                    break;
-                case "capsule":
-                    document.getElementById("hc_formatCapsule").checked = true;
-                    break;
-                case "oil":
-                    document.getElementById("hc_formatOil").checked = true;
-                    break;
-                case "edible":
-                    document.getElementById("hc_formatEdible").checked = true;
-                    break;
-                case "topical":
-                    document.getElementById("hc_formatTopical").checked = true;
-            }
-            //Some features are not available until all the libraries have loaded
-            function onLoadReady() {
+            //THC Slider
+            var hc_sliderTHC = document.getElementById('hc_sliderTHCControl');
+            noUiSlider.create(hc_sliderTHC, {
+                start: 0,
+                connect: [true, false],
+                step: 5,
+                range: {
+                    min: 0,
+                    max: 100
+                }
+            });
+            hc_sliderTHC.noUiSlider.set(hcData.Clinical.prescriptions.thcPercent);
+            var hc_sliderTHCVal = document.getElementById('hc_sliderTHCVal');
+            hc_sliderTHC.noUiSlider.on('update', function (values, handle) {
+                hc_sliderTHCVal.value = values[handle] * 1;
+            });
+            hc_sliderTHCVal.addEventListener('change', function () {
+                hc_sliderTHC.noUiSlider.set(this.value);
+            });
 
-                //CBD Slider
-                var hc_sliderCBD = document.getElementById('hc_sliderCBDControl');
-                noUiSlider.create(hc_sliderCBD, {
-                    start: 0,
-                    connect: [false, true],
-                    step: 5,
-                    range: {
-                        min: 0,
-                        max: 100
-                    }
-                });
-                hc_sliderCBD.noUiSlider.set(hcData.Clinical.prescriptions.cbdPercent);
-                var hc_sliderCBDVal = document.getElementById('hc_sliderCBDVal');
-                hc_sliderCBD.noUiSlider.on('update', function (values, handle) {
-                    hc_sliderCBDVal.value = values[handle] * 1;
-                });
-                hc_sliderCBDVal.addEventListener('change', function () {
-                    hc_sliderCBD.noUiSlider.set(this.value);
-                });
+        };
+    </script>
 
-                //THC Slider
-                var hc_sliderTHC = document.getElementById('hc_sliderTHCControl');
-                noUiSlider.create(hc_sliderTHC, {
-                    start: 0,
-                    connect: [true, false],
-                    step: 5,
-                    range: {
-                        min: 0,
-                        max: 100
-                    }
-                });
-                hc_sliderTHC.noUiSlider.set(hcData.Clinical.prescriptions.thcPercent);
-                var hc_sliderTHCVal = document.getElementById('hc_sliderTHCVal');
-                hc_sliderTHC.noUiSlider.on('update', function (values, handle) {
-                    hc_sliderTHCVal.value = values[handle] * 1;
-                });
-                hc_sliderTHCVal.addEventListener('change', function () {
-                    hc_sliderTHC.noUiSlider.set(this.value);
-                });
-
-            };
-        </script>
-
-        <!--   Core JS Files   -->
-        <script src="material-kit/assets/js/core/jquery.min.js" type="text/javascript"></script>
-        <script src="material-kit/assets/js/core/popper.min.js" type="text/javascript"></script>
-        <script src="material-kit/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-        <script src="material-kit/assets/js/plugins/moment.min.js"></script>
-        <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-        <script src="material-kit/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
-        <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-        <script src="material-kit/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
-        <!--  Google Maps Plugin  -->
-        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
-        <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
-        <script src="material-kit/assets/js/plugins/bootstrap-tagsinput.js"></script>
-        <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-        <script src="material-kit/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
-        <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-        <script src="material-kit/assets/js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
-        <!-- Place this tag in your head or just before your close body tag. -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-        <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+    <!--   Core JS Files   -->
+    <script src="material-kit/assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/plugins/moment.min.js"></script>
+    <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+    <script src="material-kit/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="material-kit/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+    <!--  Google Maps Plugin  -->
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
+    <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+    <script src="material-kit/assets/js/plugins/bootstrap-tagsinput.js"></script>
+    <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+    <script src="material-kit/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+    <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+    <script src="material-kit/assets/js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+    <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
 </body>
 
 </html>
