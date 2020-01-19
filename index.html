@@ -13,8 +13,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- Material Kit CSS -->
     <link href="material-kit/assets/css/material-kit.css?v=2.2.0" rel="stylesheet" />
+    <style>
+        .alert-doctor {
+            color: #114e7e;
+            background-color: #e8f8ff;
+        }
+    </style>
     <!-- Mock data -->
     <script>
+        const tday = new Date();
+        const minDaysGreenInventory = 7;    // 3-7 days and inventory will appear yellow (warning colour)
+        const minDaysYellowInventory = 3;   // <3 days and inventory will appear red (critical colour)
+        const maxCBD = 40;
+        const maxTHC = 50;
+        //Special case where a is in local time and b is in UTC
+        function dateDiffInDays(a, b) {
+            // Discard the time and time-zone information.
+            b = new Date(b.getTime() + tday.getTimezoneOffset() * 60000); //Since b's TZ is not specified it will be treated as UTC, we have to add the offset to get it to local time so that when it's converted to UTC it does not slide back a day.
+            const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+            const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+            return Math.floor((utc2 - utc1) / 86400000);    //milliseconds in a day (1000*60*60*24)
+        }
+
         hcData = {
             "Demographics": {
                 "lastName": "Bourne",
@@ -45,6 +65,35 @@
                 },
             }
         }
+
+        var tabledata = [
+            { id: 1, strain: "Bob Marley Special", lp: "AuroraMock", cbd: "5", thc: "30", format: "dried", rating: "4.5", inventoryExpiry: "2020-01-17", unitPrice: "12.95", units: "g" },
+            { id: 2, strain: "Purple Kush", lp: "AuroraMock", cbd: "10", thc: 20, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-18", unitPrice: "11.20", units: "g" },
+            { id: 3, strain: "CBD Drops", lp: "AuroraMock", cbd: 0.8, thc: "22-30", format: "oil", rating: "4.1", inventoryExpiry: "2020-01-19", unitPrice: "11.20", units: "g" },
+            { id: 4, strain: "Raspberry THC Gummies", lp: "AuroraMock", cbd: 0, thc: 2, format: "edible", rating: "2", inventoryExpiry: "2020-01-20", unitPrice: "11.20", units: "g" },
+            { id: 5, strain: "Aurora THC Drops", lp: "AuroraMock", cbd: 0, thc: 27, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-21", unitPrice: "11.20", units: "g" },
+            { id: 6, strain: "Ambition", lp: "AuroraMock", cbd: 1, thc: 1, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-22", unitPrice: "11.20", units: "g" },
+            { id: 7, strain: "a", lp: "AuroraMock", cbd: 40, thc: 40, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-21", unitPrice: "11.20", units: "g" },
+            { id: 8, strain: "b", lp: "AuroraMock", cbd: 2, thc: 2, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-22", unitPrice: "11.20", units: "g" },
+            { strain: "c", lp: "AuroraMock", cbd: 3, thc: 3, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
+            { strain: "d", lp: "AuroraMock", cbd: 4, thc: 4, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
+            { strain: "e", lp: "AuroraMock", cbd: 5, thc: 5, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
+            { strain: "f", lp: "AuroraMock", cbd: 40, thc: 50, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
+        ];
+        //Product table hygiene: transform/normalize data into presentation format
+        for (var i = 0; i < tabledata.length; i++) {
+            d = dateDiffInDays(tday, new Date(tabledata[i]["inventoryExpiry"]));
+            t = d >= minDaysGreenInventory ? 2 : (d >= minDaysYellowInventory ? 1 : 0);
+            tabledata[i]["inStock"] = t;
+            tabledata[i]["displayCost"] = tabledata[i]["unitPrice"] + "/" + tabledata[i]["units"];
+            s = tabledata[i]["cbd"];
+            if (typeof s == "string") { s = s.replace(/\-[\s\S]*/, ""); }
+            tabledata[i]["cbdProgress"] = s / maxCBD * 100;
+            s = tabledata[i]["thc"];
+            if (typeof s == "string") { s = s.replace(/\-[\s\S]*/, ""); }
+            tabledata[i]["thcProgress"] = s / maxTHC * 100;
+        }
+
     </script>
 </head>
 
@@ -77,28 +126,30 @@
                 <div class="col-10">
                     <div class="row">
                         <div class="col-12">
-                            <span><span id="hc_name"></span>
-
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>DOB:</b> <span id="hc_dob"></span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Gender (at birth):</b> <span id="hc_gender"></span>
-                                <span id="hc_identifiesAsContainer">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Identifies as:</b> <span id="hc_identifiesAs"></span>
-                                </span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Weight:</b> <span id="hc_weight"></span>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>Height:</b> <span id="hc_height"></span>
-                            </span>
+                            <div class="row">
+                                <div class="col"><span id="hc_name"></span></div>
+                                <div class="col-lg"><b>DOB:</b> <span id="hc_dob"></span></div>
+                                <div class="col"><b>Gender (at birth):</b> <span id="hc_gender"></span></div>
+                                <div class="col"><span id="hc_identifiesAsContainer"><b>Identifies as:</b> <span id="hc_identifiesAs"></span></span></div>
+                                <div class="col-xl"><b>Weight:</b> <span id="hc_weight"></span></div>
+                                <div class="col"><b>Height:</b> <span id="hc_height"></span></div>
+                            </div>
                         </div>
                         <div class="col-12">
+                            <div class="row">
 
-                            <span>
-                                <i class="material-icons" style="  margin: 0;position: relative;top: 8px;"> healing</i>
-                                <b>Condition(s):</b> <span id="hc_conditions"></span>
-                            </span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span>
-                                <i class="material-icons" style="  margin: 0;position: relative;top: 8px;"> warning</i>
-                                <b>Possible contraindication(s):</b> <span id="hc_contraindications"></span>
-                            </span>
+                                <div class="col"><span>
+                                        <i class="material-icons" style="  margin: 0;position: relative;top: 8px;">
+                                            healing</i>
+                                        <b>Condition(s):</b> <span id="hc_conditions"></span>
+                                    </span></div>
+                                <div class="col-lg"><span>
+                                        <i class="material-icons" style="  margin: 0;position: relative;top: 8px;">
+                                            warning</i>
+                                        <b>Possible contraindication(s):</b> <span id="hc_contraindications"></span>
+                                    </span></div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,18 +158,18 @@
     </div>
 
 
-    <div class="card" style="margin-top: 0px;">
+    <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
         <div class="card-body " style="background-color: #ffffff;">
             <div class="row">
                 <div class="col-sm-auto">
-                    <b>Rx:</b> <span id="hc_prescribingHCP"></span> </br>
-                    &nbsp; <span id="hc_clinic"></span>
+                    <b>Rx:</b> <span id="hc_prescribingHCP" class="alert-doctor"></span> </br>
+                    &nbsp; <span id="hc_clinic" class="alert-doctor"></span>
                 </div>
 
                 <div class="col-md-auto">
                     <div class="row">
                         <div class="col">
-                            <b>Strain:</b> <span id="hc_strain"></span>
+                            <b>Strain:</b> <span id="hc_strain" class="alert-doctor"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -153,7 +204,7 @@
                 <div class="col-md-2">
                     <div class="row">
                         <div class="col">
-                            <b>CBD% &gt; </b> (<span id="hc_cbdPercent"></span>%)
+                            <b>CBD% &gt; </b> <span class="alert-doctor">(<span id="hc_cbdPercent"></span>%)</span>
                             <input id="hc_sliderCBDVal" style="width:35px; height:25px;">%
                         </div>
                     </div>
@@ -166,7 +217,7 @@
                 <div class="col-md-2">
                     <div class="row">
                         <div class="col">
-                            <b>THC% &lt; </b> (<span id="hc_thcPercent"></span>%)
+                            <b>THC% &lt; </b> <span class="alert-doctor">(<span id="hc_thcPercent"></span>%)</span>
                             <input id="hc_sliderTHCVal" style="width:35px; height:25px;">%
                         </div>
                     </div>
@@ -179,7 +230,7 @@
                 <div class="col-md-auto">
                     <div class="row">
                         <div class="col">
-                            <b>Format:</b> <span id="hc_format"></span>
+                            <b>Format:</b> <span id="hc_format" class="alert-doctor"></span>
                         </div>
                     </div>
                     <div class="row">
@@ -228,9 +279,10 @@
                     </div>
                 </div>
             </div>
-            <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+            <!-- <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
                 <div class="card-header" role="tab" id="headingTwox" style="padding: 5px;">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                        aria-expanded="false" aria-controls="collapseTwo">
                         filters
                         <i class="material-icons">keyboard_arrow_down</i>
                     </a>
@@ -240,10 +292,25 @@
                         [[ filters ]]
                     </div>
                 </div>
+            </div> -->
+        </div>
+    </div>
+
+
+    <div class="card" style="margin-top: 5px; margin-bottom: 0px;">
+        <div class="row">
+            <div class="col-lg-9" style="padding-right: 0px;">
+                <div id="hc_productList"></div>
+            </div>
+            <div class="col-lg-3">
+                <div id="hc_productDetails">
+                    [[ product details ]]
+                </div>
             </div>
         </div>
-
     </div>
+
+
 
 
     <!-- Populate fields -->
@@ -339,6 +406,31 @@
                 hc_sliderTHC.noUiSlider.set(this.value);
             });
 
+            //Product table
+            var table = new Tabulator("#hc_productList", {
+                height: 205, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+                layout: "fitColumns", //fit columns to width of table (optional)
+                data: tabledata,
+                // autoColumns: true,
+                columns: [ //Define Table Columns
+                    { title: "Strain", field: "strain", width: 150 },
+                    { title: "LP", field: "lp", align: "left" },
+                    // {title:"Progress", field:"age", sorter:"number", align:"left", formatter:"progress",  editable:true, headerSort:false, headerVertical:true},
+                    { title: "CBD", field: "cbd" },
+                    { title: "CBD", field: "cbdProgress", formatter: "progress" },
+                    { title: "THC", field: "thc" },
+                    { title: "THC", field: "thcProgress", formatter: "progress" },
+                    { title: "Format", field: "format" },
+                    { title: "Rating", field: "rating", formatter: "star" },
+                    { title: "In-stock", field: "inStock" },
+                    { title: "Price", field: "displayCost", sorter: "date", align: "center" },
+                ],
+                rowClick: function (e, row) { //trigger an alert message when the row is clicked
+                    document.getElementById('hc_productDetails').innerHTML = row.getData().id + " Clicked!!!!";
+                },
+            });
+
+
         };
     </script>
 
@@ -363,6 +455,13 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
     <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+    <!-- Tabulator -->
+    <!-- Run locally -->
+    <link href="tabulator-master/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="tabulator-master/dist/js/tabulator.min.js"></script>
+    <!-- Run via CDN -->
+    <!-- <link href="https://unpkg.com/tabulator-tables@4.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.5.2/dist/js/tabulator.min.js"></script> -->
 </body>
 
 </html>
