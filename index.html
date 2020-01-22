@@ -30,6 +30,7 @@
             background-color: #e8f8ff;
         }
     </style>
+
     <!-- Mock data -->
     <script>
         hcData = {
@@ -48,7 +49,7 @@
                     " Hypertension",
                 ],
                 "contraindications": [
-                    "Percocets 2012-2014",
+                    "Percocet 2012-2014",
                 ],
             },
             "Clinical": {
@@ -60,7 +61,17 @@
                     "cbdPercent": "5",
                     "thcPercent": "25",
                 },
-            }
+            },
+            "orderHx": [
+                { "product": "10:10 Balance oil", "orderDate": "August 27, 2018", "instructions": "Take 3 drops 1 hr before bed.", "cost": "$172.00" },
+                { "product": "10:10 Balance oil", "orderDate": "September 26, 2018", "instructions": "Take 5 drops 1 hr before bed. Mix into tea.", "cost": "$172.0" },
+                { "product": "10:10 Balance oil", "orderDate": "October 25, 2018", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$258.00" },
+                { "product": "10:10 Balance oil", "orderDate": "December 28, 2018", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$516.00" },
+                { "product": "5:20 CBD oil", "orderDate": "April 14, 2019", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$86.00" },
+                { "product": "1:25 CBD oil", "orderDate": "May 24, 2019", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$92.00" },
+                { "product": "1:25 CBD oil", "orderDate": "June 26, 2019", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$276.00" },
+                { "product": "1:25 CBD oil", "orderDate": "September 29, 2019", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$276.00" }
+            ]
         }
 
         //Special case where a is in local time and b is in UTC
@@ -105,7 +116,7 @@
             { name: "k", lp: "MM", strain: "Indica", cbd: 3, thc: 30, format: "capsule", rating: "4.1", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
             { name: "l", lp: "MM", strain: "Indica", cbd: 40, thc: 4, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
             { name: "m", lp: "MM", strain: "Indica", cbd: 5, thc: 15, format: "topical", rating: "4.3", inventoryExpiry: "2020-02-23", unitPrice: "11.20", units: "g" },
-            { name: "n", lp: "MM", strain: "Indica", cbd: 40, thc: 40, format: "edible", rating: "4.4", inventoryExpiry: "2020-02-24", unitPrice: "11.20", units: "g" },
+            { id: 9, name: "Midnight", lp: "MedReleaf", strain: "Sativa", cbd: "8-12", thc: "6-10", format: "dried", rating: "4.1", inventoryExpiry: "2020-02-24", unitPrice: "11.91", units: "g" },
         ];
         //Product table hygiene: transform/normalize data into presentation format
         for (var i = 0; i < tabledata.length; i++) {
@@ -121,6 +132,13 @@
             if (typeof s == "string") { s = s.replace(/\-[\s\S]*/, ""); }
             tabledata[i]["thcProgress"] = s;
             tabledata[i]["lpDisplay"] = "<img src='imgs/logo" + tabledata[i]["lp"] + ".png'> " + tabledata[i]["lp"];
+        }
+
+        var hcProductDetails = {
+            "id": 9,
+            "imgs": ["medreleaf-midnight.jpg", "medreleaf-midnight2.jpg", "medreleaf-midnight3.jpg", "medreleaf-midnight4.jpg", "medreleaf-midnight5.png"],
+            "orderUnits": "bottle (30gm)",
+            "orderQty": 1,
         }
 
     </script>
@@ -167,18 +185,17 @@
                         </div>
                         <div class="col-12">
                             <div class="row">
-
                                 <div class="col"><span>
                                         <i class="material-icons" style="  margin: 0;position: relative;top: 8px;">
                                             healing</i>
-                                        <b>Condition(s):</b> <span id="hc_conditions"></span>
+                                        <b>Conditions:</b> <span id="hc_conditions"></span>
                                     </span></div>
                                 <div class="col-lg"><span>
                                         <i class="material-icons" style="  margin: 0;position: relative;top: 8px;">
                                             warning</i>
-                                        <b>Possible contraindication(s):</b> <span id="hc_contraindications"></span>
-                                    </span></div>
-
+                                        <b>Possible Contraindications:</b> <span id="hc_contraindications"></span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -195,7 +212,6 @@
                     <b>Rx:</b> <span id="hc_prescribingHCP" class="alert-doctor"></span> </br>
                     &nbsp; <span id="hc_clinic" class="alert-doctor"></span>
                 </div>
-
                 <div class="col-lg-auto">
                     <div class="row">
                         <div class="col">
@@ -309,31 +325,16 @@
                     </div>
                 </div>
             </div>
-            <!-- <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
-                <div class="card-header" role="tab" id="headingTwox" style="padding: 5px;">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                        aria-expanded="false" aria-controls="collapseTwo">
-                        filters
-                        <i class="material-icons">keyboard_arrow_down</i>
-                    </a>
-                </div>
-                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwox">
-                    <div class="card-body">
-                        [[ filters ]]
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
-
 
     <!-- product list & details -->
     <div id="hc_productListContainer" class="container-fluid fill-height" style="margin-top: 5px; margin-bottom: 0px; margin-left: -10px;">
         <div class="row">
-            <div class="col-lg-9" style="padding-right: 0px;">
+            <div class="col-lg-8" style="padding-right: 0px;">
                 <div id="hc_productList"></div>
             </div>
-            <div class="col-lg-3" style="padding-left: 10px; padding-right: 0px;">
+            <div class="col-lg-4" style="padding-left: 10px; padding-right: 0px;">
                 <div id="hc_productDetails">
                     <ul class="nav nav-tabs" id="myTab" role="tablist" style="background-color: #80a0ff; padding:0px;">
                         <li class="nav-item">
@@ -342,184 +343,258 @@
                         <li class="nav-item">
                             <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#rxhx" role="tab" aria-controls="rxhx" aria-selected="false">Rx Hx</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#prescribe" role="tab" aria-controls="prescribe" aria-selected="false">Prescription</a>
+                        </li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab"><i>Select a product</i></div>
-                        <div class="tab-pane fade" id="rxhx" role="tabpanel" aria-labelledby="rxhx-tab">[[ Prescription History ]]</div>
+                        <div class="tab-pane fade" id="rxhx" role="tabpanel" aria-labelledby="rxhx-tab">
+                            </br>
+                            <div class=col-md-12>
+                                <div class=card>
+                                    <div class=card-header style="padding: 5px 10px 5px 10px;">
+                                        <h4 class=card-title style="margin-top: 0px; font-family: Arial, Helvetica, sans-serif;">Order History</h4>
+                                    </div>
+                                    <div class=card-body>
+                                        <div class=table-responsive id="hcOrderHx"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="prescribe" role="tabpanel" aria-labelledby="prescribe-tab"><i>Select a product and <b>add</b> it</i></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Populate fields -->
-                    <script>
-                        var tablePL;    //Define at a global scope - so that the table can be referenced anywhere
+    <!-- Populate fields -->
+    <script>
+        var tablePL;    //Define at a global scope - so that the table can be referenced anywhere
 
-                        function hc_populate(fld, val) {
-                            document.getElementById(fld).innerHTML = val;
-                        }
-                        hc_populate("hc_name", hcData.Demographics.lastName + ", " + hcData.Demographics.firstName);
-                        hc_populate("hc_dob", hcData.Demographics.dob);
-                        hc_populate("hc_gender", hcData.Demographics.gender);
-                        hc_populate("hc_identifiesAs", hcData.Demographics.identifiesAs);
-                        hc_populate("hc_height", hcData.Demographics.height);
-                        hc_populate("hc_weight", hcData.Demographics.weight);
-                        hc_populate("hc_conditions", hcData.Demographics.conditions);
-                        hc_populate("hc_contraindications", hcData.Demographics.contraindications);
-                        document.getElementById("hc_photoSml").src = hcData.Demographics.photo;
-                        document.getElementById("hc_photoLrg").src = hcData.Demographics.photo;
-                        hc_populate("hc_prescribingHCP", hcData.Clinical.prescribingHCP);
-                        hc_populate("hc_clinic", hcData.Clinical.clinic);
-                        hc_populate("hc_strain", (hcData.Clinical.prescriptions.strain).toString().replace(/,/gi, ", "));
-                        hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
-                        hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
-                        hc_populate("hc_format", hcData.Clinical.prescriptions.format.toString().replace(/,/gi, ", "));
-                        if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
-                            document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
-                        }
-                        (hcData.Clinical.prescriptions.strain).forEach(function (item) {
-                            if (item == "Indica") { document.getElementById("hc_strainIndica").checked = true; }
-                            if (item == "Sativa") { document.getElementById("hc_strainSativa").checked = true; }
-                            if (item == "Hybrid") { document.getElementById("hc_strainHybrid").checked = true; }
-                        });
-                        (hcData.Clinical.prescriptions.format).forEach(function (item) {
-                            if (item == "dried") { document.getElementById("hc_formatDried").checked = true; }
-                            if (item == "capsule") { document.getElementById("hc_formatCapsule").checked = true; }
-                            if (item == "oil") { document.getElementById("hc_formatOil").checked = true; }
-                            if (item == "edible") { document.getElementById("hc_formatEdible").checked = true; }
-                            if (item == "topical") { document.getElementById("hc_formatTopical").checked = true; }
-                        });
+        function hc_populate(fld, val) {
+            document.getElementById(fld).innerHTML = val;
+        }
+        hc_populate("hc_name", hcData.Demographics.lastName + ", " + hcData.Demographics.firstName);
+        hc_populate("hc_dob", hcData.Demographics.dob);
+        hc_populate("hc_gender", hcData.Demographics.gender);
+        hc_populate("hc_identifiesAs", hcData.Demographics.identifiesAs);
+        hc_populate("hc_height", hcData.Demographics.height);
+        hc_populate("hc_weight", hcData.Demographics.weight);
+        hc_populate("hc_conditions", hcData.Demographics.conditions);
+        hc_populate("hc_contraindications", hcData.Demographics.contraindications);
+        document.getElementById("hc_photoSml").src = hcData.Demographics.photo;
+        document.getElementById("hc_photoLrg").src = hcData.Demographics.photo;
+        hc_populate("hc_prescribingHCP", hcData.Clinical.prescribingHCP);
+        hc_populate("hc_clinic", hcData.Clinical.clinic);
+        hc_populate("hc_strain", (hcData.Clinical.prescriptions.strain).toString().replace(/,/gi, ", "));
+        hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
+        hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
+        hc_populate("hc_format", hcData.Clinical.prescriptions.format.toString().replace(/,/gi, ", "));
+        if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
+            document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
+        }
+        (hcData.Clinical.prescriptions.strain).forEach(function (item) {
+            if (item == "Indica") { document.getElementById("hc_strainIndica").checked = true; }
+            if (item == "Sativa") { document.getElementById("hc_strainSativa").checked = true; }
+            if (item == "Hybrid") { document.getElementById("hc_strainHybrid").checked = true; }
+        });
+        (hcData.Clinical.prescriptions.format).forEach(function (item) {
+            if (item == "dried") { document.getElementById("hc_formatDried").checked = true; }
+            if (item == "capsule") { document.getElementById("hc_formatCapsule").checked = true; }
+            if (item == "oil") { document.getElementById("hc_formatOil").checked = true; }
+            if (item == "edible") { document.getElementById("hc_formatEdible").checked = true; }
+            if (item == "topical") { document.getElementById("hc_formatTopical").checked = true; }
+        });
 
-                        //Some features are not available until all the libraries have loaded
-                        function onLoadReady() {
+        //Some features are not available until all the libraries have loaded
+        function onLoadReady() {
 
-                            //CBD Slider
-                            var hc_sliderCBD = document.getElementById('hc_sliderCBDControl');
-                            noUiSlider.create(hc_sliderCBD, {
-                                start: 0,
-                                connect: [false, true],
-                                step: 5,
-                                range: {
-                                    min: 0,
-                                    max: 100
-                                }
-                            });
-                            hc_sliderCBD.noUiSlider.set(hcData.Clinical.prescriptions.cbdPercent);
-                            var hc_sliderCBDVal = document.getElementById('hc_sliderCBDVal');
-                            hc_sliderCBD.noUiSlider.on('update', function (values, handle) {
-                                hc_sliderCBDVal.value = values[handle] * 1;
-                                filterPL();
-                            });
-                            hc_sliderCBDVal.addEventListener('change', function () {
-                                hc_sliderCBD.noUiSlider.set(this.value);
-                                filterPL();
-                            });
+            //CBD Slider
+            var hc_sliderCBD = document.getElementById('hc_sliderCBDControl');
+            noUiSlider.create(hc_sliderCBD, {
+                start: 0,
+                connect: [false, true],
+                step: 5,
+                range: {
+                    min: 0,
+                    max: 100
+                }
+            });
+            hc_sliderCBD.noUiSlider.set(hcData.Clinical.prescriptions.cbdPercent);
+            var hc_sliderCBDVal = document.getElementById('hc_sliderCBDVal');
+            hc_sliderCBD.noUiSlider.on('update', function (values, handle) {
+                hc_sliderCBDVal.value = values[handle] * 1;
+                filterPL();
+            });
+            hc_sliderCBDVal.addEventListener('change', function () {
+                hc_sliderCBD.noUiSlider.set(this.value);
+                filterPL();
+            });
 
-                            //THC Slider
-                            var hc_sliderTHC = document.getElementById('hc_sliderTHCControl');
-                            noUiSlider.create(hc_sliderTHC, {
-                                start: 0,
-                                connect: [true, false],
-                                step: 5,
-                                range: {
-                                    min: 0,
-                                    max: 100
-                                }
-                            });
-                            hc_sliderTHC.noUiSlider.set(hcData.Clinical.prescriptions.thcPercent);
-                            var hc_sliderTHCVal = document.getElementById('hc_sliderTHCVal');
-                            hc_sliderTHC.noUiSlider.on('update', function (values, handle) {
-                                hc_sliderTHCVal.value = values[handle] * 1;
-                                filterPL();
-                            });
-                            hc_sliderTHCVal.addEventListener('change', function () {
-                                hc_sliderTHC.noUiSlider.set(this.value);
-                                filterPL();
-                            });
+            //THC Slider
+            var hc_sliderTHC = document.getElementById('hc_sliderTHCControl');
+            noUiSlider.create(hc_sliderTHC, {
+                start: 0,
+                connect: [true, false],
+                step: 5,
+                range: {
+                    min: 0,
+                    max: 100
+                }
+            });
+            hc_sliderTHC.noUiSlider.set(hcData.Clinical.prescriptions.thcPercent);
+            var hc_sliderTHCVal = document.getElementById('hc_sliderTHCVal');
+            hc_sliderTHC.noUiSlider.on('update', function (values, handle) {
+                hc_sliderTHCVal.value = values[handle] * 1;
+                filterPL();
+            });
+            hc_sliderTHCVal.addEventListener('change', function () {
+                hc_sliderTHC.noUiSlider.set(this.value);
+                filterPL();
+            });
 
-                            //Product table
-                            tablePL = new Tabulator("#hc_productList", {
-                                height: document.getElementById("hc_productListContainer").clientHeight, // Set height same as container. set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-                                layout: "fitColumns", //fit columns to width of table (optional)
-                                data: tabledata,
-                                // autoColumns: true,
-                                columns: [ //Define Table Columns
-                                    { title: "Name", field: "name", width: 150 },
-                                    { title: "LP", field: "lpDisplay", align: "left", formatter: "html" },
-                                    { title: "Strain", field: "strain", align: "left", width: 80 },
-                                    { title: "CBD", field: "cbdProgress", formatter: "progress", formatterParams: { legend: true, max: maxCBD, color: "#00a060" } },
-                                    { title: "THC", field: "thcProgress", formatter: "progress", formatterParams: { legend: true, max: maxTHC } },
-                                    { title: "Format", field: "format", width: 80 },
-                                    { title: "Rating", field: "rating", formatter: "star", width: 90 },
-                                    { title: "In-stock", field: "inStock", width: 90, formatter: "image", formatterParams: { height: 25, width: 15 }, align: "center" },
-                                    { title: "Price", field: "displayCost", sorter: "date", align: "center" },
-                                ],
-                                rowClick: function (e, row) {
-                                    rowSelectedPL(row.getData().id);
-                                },
-                            });
+            //Order history
+            var s = '<table class="table"><thead class="text-primary">';
+            s += '<th>Product</th><th>Date</th><th class="text-right">Amount</th></thead><tbody>';
+            for (var i = hcData.orderHx.length - 1; i >= 0; i--) {
+                s += '<tr>';
+                s += '<td>' + hcData.orderHx[i].product + '</td>';
+                s += '<td>' + hcData.orderHx[i].orderDate + '</td>';
+                // s += '<td>' + hcData.orderHx[i].instructions + '</td>';
+                s += '<td class="text-right">' + hcData.orderHx[i].cost + '</td>';
+                s += '</tr>';
+            }
+            s += '</tbody></table>';
+            document.getElementById("hcOrderHx").innerHTML = s;
 
-                            //Apply initial filters to the Product List table
-                            setTimeout(() => { filterPL(); }, 100); 
+            //Product table
+            tablePL = new Tabulator("#hc_productList", {
+                height: document.getElementById("hc_productListContainer").clientHeight, // Set height same as container. set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+                layout: "fitColumns", //fit columns to width of table (optional)
+                data: tabledata,
+                // autoColumns: true,
+                columns: [ //Define Table Columns
+                    { title: "Name", field: "name", width: 150 },
+                    { title: "LP", field: "lpDisplay", align: "left", formatter: "html" },
+                    { title: "Strain", field: "strain", align: "left", width: 80 },
+                    { title: "CBD", field: "cbdProgress", formatter: "progress", formatterParams: { legend: true, max: maxCBD, color: "#00a060" } },
+                    { title: "THC", field: "thcProgress", formatter: "progress", formatterParams: { legend: true, max: maxTHC } },
+                    { title: "Format", field: "format", width: 80 },
+                    { title: "Rating", field: "rating", formatter: "star", width: 90 },
+                    { title: "In-stock", field: "inStock", width: 90, formatter: "image", formatterParams: { height: 25, width: 15 }, align: "center" },
+                    { title: "Price", field: "displayCost", sorter: "date", align: "center" },
+                ],
+                rowClick: function (e, row) {
+                    rowSelectedPL(row.getData().id);
+                },
+            });
 
-                        };
-                    </script>
+            //Apply initial filters to the Product List table
+            setTimeout(() => { filterPL(); }, 100);
 
-                    <!-- Site functions -->
-                    <script>
-                        //Apply filters to ProductList
-                        function filterPL() {
-                            var s = [];
-                            var f = [];
-                            if (document.getElementById("hc_strainIndica").checked) { s.push("Indica"); }
-                            if (document.getElementById("hc_strainSativa").checked) { s.push("Sativa"); }
-                            if (document.getElementById("hc_strainHybrid").checked) { s.push("Hybrid"); }
-                            if (document.getElementById("hc_formatDried").checked) { f.push("dried"); }
-                            if (document.getElementById("hc_formatCapsule").checked) { f.push("capsule"); }
-                            if (document.getElementById("hc_formatOil").checked) { f.push("oil"); }
-                            if (document.getElementById("hc_formatTopical").checked) { f.push("topical"); }
-                            if (document.getElementById("hc_formatEdible").checked) { f.push("edible"); }
-                            if (typeof tablePL != "undefined") {    //Don't filter the table if it hasn't been constructed yet
-                                tablePL.setFilter([
-                                    { field: "strain", type: "in", value: s },
-                                    { field: "format", type: "in", value: f },
-                                    { field: "thcProgress", type: "<=", value: (document.getElementById('hc_sliderTHCVal').value * 1) },
-                                    { field: "cbdProgress", type: ">=", value: (document.getElementById('hc_sliderCBDVal').value * 1) },
-                                ])
-                            }
-                        }
+            //Display tab Order History
+            $('.nav-tabs a[href="#rxhx"]').tab('show');
 
-                        //When a row is clicked in the Product List table --> Set the tab to 'Details' and update the details content
-                        function rowSelectedPL(rowID) {
-                            document.getElementById('details').innerHTML = rowID + " Clicked!!!!";
-                            $('.nav-tabs a[href="#details"]').tab('show');
-                        }
-                    </script>
+        };
+    </script>
 
-                    <!--   Core JS Files   -->
-                    <script src="material-kit/assets/js/core/jquery.min.js" type="text/javascript"></script>
-                    <script src="material-kit/assets/js/core/popper.min.js" type="text/javascript"></script>
-                    <script src="material-kit/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-                    <script src="material-kit/assets/js/plugins/moment.min.js"></script>
-                    <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
-                    <script src="material-kit/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
-                    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-                    <script src="material-kit/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
-                    <!--  Google Maps Plugin  -->
-                    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
-                    <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
-                    <script src="material-kit/assets/js/plugins/bootstrap-tagsinput.js"></script>
-                    <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-                    <script src="material-kit/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
-                    <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-                    <script src="material-kit/assets/js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
-                    <!-- Place this tag in your head or just before your close body tag. -->
-                    <script async defer src="https://buttons.github.io/buttons.js"></script>
-                    <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
-                    <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
-                    <!-- Tabulator -->
-                    <!-- Run locally -->
-                    <link href="tabulator-master/dist/css/tabulator.min.css" rel="stylesheet">
-                    <script type="text/javascript" src="tabulator-master/dist/js/tabulator.min.js"></script>
-                    <!-- Run via CDN -->
-                    <!-- <link href="https://unpkg.com/tabulator-tables@4.5.2/dist/css/tabulator.min.css" rel="stylesheet">
+    <!-- Site functions -->
+    <script>
+        //Apply filters to ProductList
+        function filterPL() {
+            var s = [];
+            var f = [];
+            if (document.getElementById("hc_strainIndica").checked) { s.push("Indica"); }
+            if (document.getElementById("hc_strainSativa").checked) { s.push("Sativa"); }
+            if (document.getElementById("hc_strainHybrid").checked) { s.push("Hybrid"); }
+            if (document.getElementById("hc_formatDried").checked) { f.push("dried"); }
+            if (document.getElementById("hc_formatCapsule").checked) { f.push("capsule"); }
+            if (document.getElementById("hc_formatOil").checked) { f.push("oil"); }
+            if (document.getElementById("hc_formatTopical").checked) { f.push("topical"); }
+            if (document.getElementById("hc_formatEdible").checked) { f.push("edible"); }
+            if (typeof tablePL != "undefined") {    //Don't filter the table if it hasn't been constructed yet
+                tablePL.setFilter([
+                    { field: "strain", type: "in", value: s },
+                    { field: "format", type: "in", value: f },
+                    { field: "thcProgress", type: "<=", value: (document.getElementById('hc_sliderTHCVal').value * 1) },
+                    { field: "cbdProgress", type: ">=", value: (document.getElementById('hc_sliderCBDVal').value * 1) },
+                ])
+            }
+        }
+
+        //When a row is clicked in the Product List table --> Set the tab to 'Details' and update the details content
+        function rowSelectedPL(rowID) {
+            var t = "";
+            for (var i = 0; i < tabledata.length; i++) { if (tabledata[i].id == rowID) { t = tabledata[i]; break; } }
+            var s = '';
+            //Add to prescription
+            s += '<div id="hcSelectQty" style="margin-top:10px; margin-bottom:10px; padding:5px; background-color:#dcdcdc; text-align:center;">Add to prescription: ';
+            s += '<input type="text" id="hcAddQty" value="' + hcProductDetails.orderQty + '" style="width:40px; text-align:right; padding: 0px 5px;"> ' + hcProductDetails.orderUnits + ' ';
+            s += '<button class="btn btn-default btn-round btn-sm" onclick="addToOrder()">Add</button></div>';
+            //Image carousel
+            s += '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel"><ol class="carousel-indicators">';
+            for (var i = 0; i < hcProductDetails.imgs.length; i++) {
+                s += '<li data-target="#carouselExampleIndicators" data-slide-to="' + i + '"' + (i == 0 ? ' class="active"' : '') + '></li>';
+            }
+            s += '</ol><div class="carousel-inner">';
+            for (var i = 0; i < hcProductDetails.imgs.length; i++) {
+                s += '<div class="carousel-item' + (i == 0 ? ' active' : '') + '">';
+                s += '<img class="d-block w-100" src="imgs/' + hcProductDetails.imgs[i] + '" alt="Slide #' + i + '"></div>';
+            }
+            s += '</div><a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="sr-only">Previous</span></a>';
+            s += '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="sr-only">Next</span></a></div>';
+
+            //INTERIM DISPLAY...
+            s += "<b>Row ID: </b>" + rowID + "</br>";
+            for (var key in t) { s += "<b>" + key + ": </b>" + t[key] + "</br>"; }
+            //...interim display
+            document.getElementById('details').innerHTML = s;
+            $('.nav-tabs a[href="#details"]').tab('show');  //Set the Details tab as active
+            $('.carousel').carousel({ interval: 5000 });    //Initiate the carousel
+        }
+
+        //When a product has been selected, and then the order quantity has been 'Add'ed, set the Prescription tab as active and add the product + qty to the prescription
+        function addToOrder(qty) {
+        console.log(qty);
+        console.log(typeof qty);
+            if (typeof qty=="undefined") { qty = document.getElementById("hcAddQty").value; }
+            var prodID = hcProductDetails.id;
+            var s = "";
+            s += "Add [" + qty + "] of ID:" + prodID;
+            document.getElementById('prescribe').innerHTML = s;
+            $('.nav-tabs a[href="#prescribe"]').tab('show');  //Set the Prescription tab as active
+        }
+    </script>
+
+    <!--   Core JS Files   -->
+    <script src="material-kit/assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+    <script src="material-kit/assets/js/plugins/moment.min.js"></script>
+    <!--	Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker -->
+    <script src="material-kit/assets/js/plugins/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="material-kit/assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+    <!--  Google Maps Plugin  -->
+    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
+    <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+    <script src="material-kit/assets/js/plugins/bootstrap-tagsinput.js"></script>
+    <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+    <script src="material-kit/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+    <!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+    <script src="material-kit/assets/js/plugins/jasny-bootstrap.min.js" type="text/javascript"></script>
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!-- Control Center for Material Kit: parallax effects, scripts for the example pages etc -->
+    <script src="material-kit/assets/js/material-kit.js?v=2.2.0" type="text/javascript"></script>
+    <!-- Tabulator -->
+    <!-- Run locally -->
+    <link href="tabulator-master/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="tabulator-master/dist/js/tabulator.min.js"></script>
+    <!-- Run via CDN -->
+    <!-- <link href="https://unpkg.com/tabulator-tables@4.5.2/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables@4.5.2/dist/js/tabulator.min.js"></script> -->
 </body>
 
