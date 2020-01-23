@@ -9,7 +9,8 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Fonts and icons -->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
     <!-- Material Kit CSS -->
     <link href="material-kit/assets/css/material-kit.css?v=2.2.0" rel="stylesheet" />
@@ -66,7 +67,7 @@
             },
             "orderHx": [
                 { "product": "10:10 Balance oil", "orderDate": "August 27, 2018", "instructions": "Take 3 drops 1 hr before bed.", "cost": "$172.00" },
-                { "product": "10:10 Balance oil", "orderDate": "September 26, 2018", "instructions": "Take 5 drops 1 hr before bed. Mix into tea.", "cost": "$172.0" },
+                { "product": "10:10 Balance oil", "orderDate": "September 26, 2018", "instructions": "Take 5 drops 1 hr before bed. Mix into tea.", "cost": "$172.00" },
                 { "product": "10:10 Balance oil", "orderDate": "October 25, 2018", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$258.00" },
                 { "product": "10:10 Balance oil", "orderDate": "December 28, 2018", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$516.00" },
                 { "product": "5:20 CBD oil", "orderDate": "April 14, 2019", "instructions": "Take 6 drops 1 hr before bed. Mix into tea.", "cost": "$86.00" },
@@ -90,7 +91,9 @@
             "inventorySafeDays": 7,
             "maxCBD": 40,
             "maxTHC": 50,
+            "conditions": ["Insomnia", "Anxiety", "Depression", "Pain", "PTSD", "Nausea", "Anorexia", "Cancer", "HIV/AIDS", "Alzheimer`s", "Crohn`s", "Epilepsy"],
         }
+        hcConfig.conditions.sort();
 
         const tday = new Date();
         const minDaysGreenInventory = hcConfig.inventorySafeDays;    // 3-7 days and inventory will appear yellow (warning colour)
@@ -124,6 +127,7 @@
         for (var i = 0; i < tabledata.length; i++) {
             d = dateDiffInDays(tday, new Date(tabledata[i]["inventoryExpiry"]));
             t = d >= minDaysGreenInventory ? 2 : (d >= minDaysYellowInventory ? 1 : 0);
+            tabledata[i]["inventoryLevel"] = t;
             tabledata[i]["inStock"] = "imgs/inventory" + t + ".png";
             tabledata[i]["displayCost"] = tabledata[i]["unitPrice"] + "/" + tabledata[i]["units"];
             //if CBD || THC is a range (e.g. 20-30) then trim the second number
@@ -143,6 +147,14 @@
             "orderQty": 1,
         }
 
+        //Fake reviews for all Products * all conditions
+        for (var i=0; i<tabledata.length; i++) {
+            for (var j=0; j<hcConfig.conditions.length; j++) {
+                s = hcConfig.conditions[j];
+                tabledata[i][s] = Math.floor(Math.random() * 100); 
+            }
+        }
+
     </script>
 </head>
 
@@ -153,7 +165,8 @@
         <div class="card-body ">
             <div class="row">
                 <div class="">
-                    <button class="" data-toggle="modal" data-target="#smallAlertModal" style="border-width: 0px; background-color: #eee;">
+                    <button class="" data-toggle="modal" data-target="#smallAlertModal"
+                        style="border-width: 0px; background-color: #eee;">
                         <div class="author" style="background-color: #eee;">
                             <img id="hc_photoSml" src="" class="avatar img-raised" style="width: 55px; height: 55px;">
                         </div>
@@ -163,10 +176,12 @@
                         <div class="modal-dialog modal-small" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                            class="material-icons">clear</i></button>
                                 </div>
                                 <div class="modal-body text-center">
-                                    <img id="hc_photoLrg" src="" class="avatar img-raised" style="width: 250px; height: 250px;"></br>
+                                    <img id="hc_photoLrg" src="" class="avatar img-raised"
+                                        style="width: 250px; height: 250px;"></br>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +195,8 @@
                                 <div class="col"><span id="hc_name"></span></div>
                                 <div class="col-lg"><b>DOB:</b> <span id="hc_dob"></span></div>
                                 <div class="col"><b>Gender (at birth):</b> <span id="hc_gender"></span></div>
-                                <div class="col"><span id="hc_identifiesAsContainer"><b>Identifies as:</b> <span id="hc_identifiesAs"></span></span></div>
+                                <div class="col"><span id="hc_identifiesAsContainer"><b>Identifies as:</b> <span
+                                            id="hc_identifiesAs"></span></span></div>
                                 <div class="col-xl"><b>Weight:</b> <span id="hc_weight"></span></div>
                                 <div class="col"><b>Height:</b> <span id="hc_height"></span></div>
                             </div>
@@ -224,7 +240,8 @@
                         <div class="col">
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_strainIndica" value="Indica" onchange="filterPL()">Indica&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_strainIndica" value="Indica"
+                                        onchange="filterPL()">Indica&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -232,7 +249,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_strainSativa" value="Sativa" onchange="filterPL()">Sativa&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_strainSativa" value="Sativa"
+                                        onchange="filterPL()">Sativa&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -240,7 +258,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_strainHybrid" value="Hybrid" onchange="filterPL()">Hybrid&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_strainHybrid" value="Hybrid"
+                                        onchange="filterPL()">Hybrid&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -285,7 +304,8 @@
                         <div class="col">
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_formatDried" onchange="filterPL()" value="Dried">Dried&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_formatDried"
+                                        onchange="filterPL()" value="Dried">Dried&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -293,7 +313,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_formatCapsule" onchange="filterPL()" value="Capsule">Capsule&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_formatCapsule"
+                                        onchange="filterPL()" value="Capsule">Capsule&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -301,7 +322,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_formatOil" onchange="filterPL()" value="Oil">Oil&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_formatOil"
+                                        onchange="filterPL()" value="Oil">Oil&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -309,7 +331,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_formatTopical" onchange="filterPL()" value="Topical">Topical&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_formatTopical"
+                                        onchange="filterPL()" value="Topical">Topical&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -317,7 +340,8 @@
                             </div>
                             <div class="form-check form-check-inline" style="margin: 0px;">
                                 <label class="form-check-label" style="color: #000000; padding-left: 20px;">
-                                    <input class="form-check-input" type="checkbox" id="hc_formatEdible" onchange="filterPL()" value="Edible">Edible&nbsp;&nbsp;
+                                    <input class="form-check-input" type="checkbox" id="hc_formatEdible"
+                                        onchange="filterPL()" value="Edible">Edible&nbsp;&nbsp;
                                     <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -333,30 +357,65 @@
             </div>
         </div>
     </div>
-
-
-
+    <!-- filters: advanced search -->
     <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
         <div class="card card-plain" style="margin-top: 0px; margin-bottom: 0px;">
             <div class="card-header" role="tab" id="headingOne" style="padding-top: 0px; margin-top: -20px;">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="float: right; margin-top: 0px; font-size: smaller;">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne" style="float: right; margin-top: 0px; font-size: smaller;">
                     Advanced search
                     <i class="material-icons" style="top:0px">keyboard_arrow_down</i>
                 </a>
             </div>
             <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
                 <div class="card-body" style="background-color: #fff;">
-                    Condition 1 [ Select |v]     Condition 2 [ Select |v]     [x] show in-stock only      [clear filters]
+                    <div class="row" style="margin-left: 15px;">
+                        <div class="col-sm-auto">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-sm dropdown-toggle" style="margin-top: -12px;"
+                                    type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="hcCondition1Label">Condition 1</span>
+                                </button>
+                                <div class="dropdown-menu" id="hcConditions1">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-sm dropdown-toggle" style="margin-top: -12px;"
+                                    type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span id="hcCondition2Label">Condition 2</span>
+                                </button>
+                                <div class="dropdown-menu" id="hcConditions2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <div class="form-check form-check-inline" style="margin: 0px;">
+                                <label class="form-check-label" style="color: #000000; padding-left: 20px;">
+                                    <input class="form-check-input" type="checkbox" id="hc_inStockOnly"
+                                        onchange="filterPL()" checked value="inStock">in-stock only
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-auto">
+                            <button class="btn btn-default btn-round btn-sm"
+                                style="padding-top: 3px; padding-bottom: 3px; margin-top: 0px;"
+                                onclick="filterPLClear()">Show all</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-
+    </div>
 
     <!-- product list & details -->
-    <div id="hc_productListContainer" class="container-fluid fill-height" style="margin-top: 5px; margin-bottom: 0px; margin-left: -10px;">
+    <div id="hc_productListContainer" class="container-fluid fill-height"
+        style="margin-top: 5px; margin-bottom: 0px; margin-left: -10px;">
         <div class="row">
             <div class="col-lg-8" style="padding-right: 0px;">
                 <div id="hc_productList"></div>
@@ -365,23 +424,29 @@
                 <div id="hc_productDetails">
                     <ul class="nav nav-tabs" id="myTab" role="tablist" style="background-color: #80a0ff; padding:0px;">
                         <li class="nav-item">
-                            <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab" aria-controls="details" aria-selected="true">Details</a>
+                            <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab"
+                                aria-controls="details" aria-selected="true">Details</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#rxhx" role="tab" aria-controls="rxhx" aria-selected="false">Rx Hx</a>
+                            <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#rxhx" role="tab"
+                                aria-controls="rxhx" aria-selected="false">Rx Hx</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#prescribe" role="tab" aria-controls="prescribe" aria-selected="false">Prescription</a>
+                            <a class="nav-link" id="rxhx-tab" data-toggle="tab" href="#prescribe" role="tab"
+                                aria-controls="prescribe" aria-selected="false">Prescription</a>
                         </li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab"><i>Select a product</i></div>
+                        <div class="tab-pane fade show active" id="details" role="tabpanel"
+                            aria-labelledby="details-tab"><i>Select a product</i></div>
                         <div class="tab-pane fade" id="rxhx" role="tabpanel" aria-labelledby="rxhx-tab">
                             </br>
                             <div class=col-md-12>
                                 <div class=card>
                                     <div class=card-header style="padding: 5px 10px 5px 10px;">
-                                        <h4 class=card-title style="margin-top: 0px; font-family: Arial, Helvetica, sans-serif;">Order History</h4>
+                                        <h4 class=card-title
+                                            style="margin-top: 0px; font-family: Arial, Helvetica, sans-serif;">Order
+                                            History</h4>
                                     </div>
                                     <div class=card-body>
                                         <div class=table-responsive id="hcOrderHx"></div>
@@ -389,7 +454,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="prescribe" role="tabpanel" aria-labelledby="prescribe-tab"><i>Select a product and <b>add</b> it</i></div>
+                        <div class="tab-pane fade" id="prescribe" role="tabpanel" aria-labelledby="prescribe-tab">
+                            <i>Select a product and <b>add</b> it</i></div>
                     </div>
                 </div>
             </div>
@@ -484,6 +550,14 @@
                 filterPL();
             });
 
+            //Condition/symptom dropdown boxes
+            var s = "";
+            hcConfig.conditions.forEach(el => { s += '<a class="dropdown-item" onclick="hcConditionSelect(\''+el+'\',1)">' + el + '</a>'; });
+            document.getElementById("hcConditions1").innerHTML = s;
+            s = "";
+            hcConfig.conditions.forEach(el => { s += '<a class="dropdown-item" onclick="hcConditionSelect(\''+el+'\',2)">' + el + '</a>'; });
+            document.getElementById("hcConditions2").innerHTML = s;
+
             //Order history
             var s = '<table class="table"><thead class="text-primary">';
             s += '<th>Product</th><th>Date</th><th class="text-right">Amount</th></thead><tbody>';
@@ -527,7 +601,7 @@
             });
 
             //Apply initial filters to the Product List table
-            setTimeout(() => { filterPL(); }, 100);
+            setTimeout(() => { filterPL(); }, 200);
 
             //Display tab Order History
             $('.nav-tabs a[href="#rxhx"]').tab('show');
@@ -557,8 +631,40 @@
                     { field: "format", type: "in", value: f },
                     { field: "thcProgress", type: "<=", value: (document.getElementById('hc_sliderTHCVal').value * 1) },
                     { field: "cbdProgress", type: ">=", value: (document.getElementById('hc_sliderCBDVal').value * 1) },
+                    { field: "inventoryLevel", type: ">=", value: (document.getElementById("hc_inStockOnly").checked * 1) },
                 ])
             }
+        }
+
+        //Clear all filters from ProductList
+        function filterPLClear() {
+            document.getElementById("hc_strainIndica").checked = true;
+            document.getElementById("hc_strainSativa").checked = true;
+            document.getElementById("hc_strainHybrid").checked = true;
+            document.getElementById("hc_formatDried").checked = true;
+            document.getElementById("hc_formatCapsule").checked = true;
+            document.getElementById("hc_formatOil").checked = true;
+            document.getElementById("hc_formatTopical").checked = true;
+            document.getElementById("hc_formatEdible").checked = true;
+            document.getElementById("hc_inStockOnly").checked = false;
+            document.getElementById('hc_sliderTHCVal').value = "100";
+            document.getElementById('hc_sliderCBDVal').value = "0";
+            document.getElementById('hc_sliderTHCControl').noUiSlider.set([100]);
+            document.getElementById('hc_sliderCBDControl').noUiSlider.set([0]);
+            filterPL();
+        }
+
+        //A condition has been selected from Advanced Search. Add the condition column to the table and sort by it
+        var hcCond = ["", ""];
+        function hcConditionSelect(condition, list) {
+            document.getElementById("hcCondition"+ list +"Label").innerHTML = condition;
+            list--;
+            if (hcCond[list]!="") {
+                //column already exists, therefore update it (delete and recreate)
+                tablePL.deleteColumn( hcCond[list] );
+            }
+            tablePL.addColumn({ title: condition, field: condition, formatter: "progress", formatterParams: { legend: true, max: 100, color: "#00bcd4" } }, false);
+            hcCond[list] = condition;
         }
 
         //When a row is clicked in the Product List table --> Set the tab to 'Details' and update the details content
@@ -593,10 +699,19 @@
         }
 
         //When a product has been selected, and then the order quantity has been 'Add'ed, set the Prescription tab as active and add the product + qty to the prescription
+        var hcOrderCart = [];
         function addToOrder(qty) {
             if (typeof qty == "undefined") { qty = document.getElementById("hcAddQty").value; }
             var prodID = hcProductDetails.id;
-            var s = "";
+            // hcOrderCart[0] = prodID;
+            // hcOrderCart[1] = hcProductDetails.name;
+            // hcOrderCart[2] = qty;
+            // hcOrderCart[3] = hcProductDetails.unitPrice;
+            // var s = "<Table><thead><td>Product</td></thead>";
+            //     for (var i=0; i<hcOrderCart.length; i++) {
+            //         s += "<row><td>"+ hcOrderCart[1] + "</td></row>";
+            //     }
+            // s += "</table>";
             s += "Add [" + qty + "] of ID:" + prodID;
             document.getElementById('prescribe').innerHTML = s;
             $('.nav-tabs a[href="#prescribe"]').tab('show');  //Set the Prescription tab as active
