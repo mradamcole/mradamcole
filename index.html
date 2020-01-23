@@ -60,6 +60,8 @@
                     "format": ["dried", "oil", "edible"],
                     "cbdPercent": "5",
                     "thcPercent": "25",
+                    "gramsPerDay": "1",
+                    "duration": "30",
                 },
             },
             "orderHx": [
@@ -97,26 +99,26 @@
         const maxTHC = hcConfig.maxTHC;
 
         var tabledata = [
-            { id: 1, name: "Bob Marley Special", lp: "Aurora", strain: "Indica", cbd: "5", thc: "30", format: "dried", rating: "4.5", inventoryExpiry: "2020-01-17", unitPrice: "12.95", units: "g" },
-            { id: 2, name: "Purple Kush", lp: "Aurora", strain: "Sativa", cbd: "10", thc: 20, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-18", unitPrice: "11.20", units: "g" },
-            { id: 3, name: "CBD Drops", lp: "Aurora", strain: "Hyrbrid", cbd: 0.8, thc: "22-30", format: "oil", rating: "4.1", inventoryExpiry: "2020-01-19", unitPrice: "11.20", units: "g" },
-            { id: 4, name: "Raspberry THC Gummies", lp: "Aurora", strain: "Indica", cbd: 0, thc: 2, format: "edible", rating: "2", inventoryExpiry: "2020-01-20", unitPrice: "11.20", units: "g" },
-            { id: 5, name: "Aurora THC Drops", lp: "Aurora", strain: "Sativa", cbd: 0, thc: 27, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-21", unitPrice: "11.20", units: "g" },
-            { id: 6, name: "Ambition", lp: "Aurora", strain: "Hybrid", cbd: 1, thc: 1, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-22", unitPrice: "11.20", units: "g" },
-            { id: 7, name: "a", lp: "Aurora", strain: "Indica", cbd: 40, thc: 40, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-21", unitPrice: "11.20", units: "g" },
-            { id: 8, name: "b", lp: "Aurora", strain: "Indica", cbd: 2, thc: 2, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-22", unitPrice: "11.20", units: "g" },
-            { name: "c", lp: "MM", strain: "Sativa", cbd: 3, thc: 3, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
-            { name: "d", lp: "MM", strain: "Sativa", cbd: 4, thc: 4, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
-            { name: "e", lp: "MM", strain: "Hybrid", cbd: 5, thc: 5, format: "dried", rating: "4.2", inventoryExpiry: "2020-02-23", unitPrice: "11.20", units: "g" },
-            { name: "f", lp: "MM", strain: "Hybrid", cbd: 40, thc: 25, format: "dried", rating: "4.2", inventoryExpiry: "2020-02-24", unitPrice: "11.20", units: "g" },
-            { name: "g", lp: "MM", strain: "Hybrid", cbd: 3, thc: 3, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
-            { name: "h", lp: "MM", strain: "Hybrid", cbd: 4, thc: 4, format: "capsule", rating: "4.6", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
-            { name: "i", lp: "MM", strain: "Sativa", cbd: 5, thc: 5, format: "edible", rating: "4.5", inventoryExpiry: "2020-02-23", unitPrice: "11.20", units: "g" },
-            { name: "j", lp: "MM", strain: "Sativa", cbd: 15, thc: 50, format: "oil", rating: "4.0", inventoryExpiry: "2020-02-24", unitPrice: "11.20", units: "g" },
-            { name: "k", lp: "MM", strain: "Indica", cbd: 3, thc: 30, format: "capsule", rating: "4.1", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g" },
-            { name: "l", lp: "MM", strain: "Indica", cbd: 40, thc: 4, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g" },
-            { name: "m", lp: "MM", strain: "Indica", cbd: 5, thc: 15, format: "topical", rating: "4.3", inventoryExpiry: "2020-02-23", unitPrice: "11.20", units: "g" },
-            { id: 9, name: "Midnight", lp: "MedReleaf", strain: "Sativa", cbd: "8-12", thc: "6-10", format: "dried", rating: "4.1", inventoryExpiry: "2020-02-24", unitPrice: "11.91", units: "g" },
+            { id: 1, name: "Bob Marley Special", lp: "Aurora", strain: "Indica", cbd: "5", thc: "30", format: "dried", rating: "4.5", inventoryExpiry: "2020-01-17", unitPrice: "12.95", units: "g", terepen: "Myrcene" },
+            { id: 2, name: "Purple Kush", lp: "Aurora", strain: "Sativa", cbd: "10", thc: 20, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-28", unitPrice: "11.20", units: "g", terepen: "Caryophyllene" },
+            { id: 3, name: "CBD Drops", lp: "Aurora", strain: "Hyrbrid", cbd: 0.8, thc: "22-30", format: "oil", rating: "4.1", inventoryExpiry: "2020-01-29", unitPrice: "11.20", units: "g", terepen: "Pinene" },
+            { id: 4, name: "Raspberry THC Gummies", lp: "Aurora", strain: "Indica", cbd: 0, thc: 2, format: "edible", rating: "2", inventoryExpiry: "2020-01-26", unitPrice: "11.20", units: "g", terepen: "limonene" },
+            { id: 5, name: "Aurora THC Drops", lp: "Aurora", strain: "Sativa", cbd: 0, thc: 27, format: "oil", rating: "4.2", inventoryExpiry: "2020-02-25", unitPrice: "11.20", units: "g", terepen: "Pinene" },
+            { id: 6, name: "Ambition", lp: "Aurora", strain: "Hybrid", cbd: 1, thc: 1, format: "dried", rating: "4.2", inventoryExpiry: "2020-02-22", unitPrice: "11.20", units: "g", terepen: "Myrcene" },
+            { id: 7, name: "Marley Natural", lp: "Aurora", strain: "Indica", cbd: 40, thc: 40, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-21", unitPrice: "11.20", units: "g", terepen: "Pinene" },
+            { id: 8, name: "Apothecanna", lp: "Aurora", strain: "Indica", cbd: 2, thc: 2, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-22", unitPrice: "11.20", units: "g", terepen: "limonene" },
+            { name: "Caviar Gold", lp: "MM", strain: "Sativa", cbd: 3, thc: 3, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g", terepen: "limonene" },
+            { name: "Willie's Reserve", lp: "MM", strain: "Sativa", cbd: 4, thc: 4, format: "dried", rating: "4.2", inventoryExpiry: "2020-01-24", unitPrice: "11.20", units: "g", terepen: "Terpinolene" },
+            { name: "Afghan", lp: "MM", strain: "Hybrid", cbd: 5, thc: 5, format: "dried", rating: "4.2", inventoryExpiry: "2020-02-23", unitPrice: "11.20", units: "g", terepen: "Humulene" },
+            { name: "Funky Monkey", lp: "MM", strain: "Hybrid", cbd: 40, thc: 25, format: "dried", rating: "4.2", inventoryExpiry: "2020-02-24", unitPrice: "11.20", units: "g", terepen: "Linalool" },
+            { name: "Blackwater", lp: "MM", strain: "Hybrid", cbd: 3, thc: 3, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-23", unitPrice: "11.20", units: "g", terepen: "Ocimene" },
+            { name: "Blueberry", lp: "MM", strain: "Hybrid", cbd: 4, thc: 4, format: "capsule", rating: "4.6", inventoryExpiry: "2020-01-25", unitPrice: "11.20", units: "g", terepen: "Nerolidol" },
+            { name: "Dynamite", lp: "MM", strain: "Sativa", cbd: 5, thc: 5, format: "edible", rating: "4.5", inventoryExpiry: "2020-02-26", unitPrice: "11.20", units: "g", terepen: "Linalool" },
+            { name: "Edelweiss", lp: "MM", strain: "Sativa", cbd: 15, thc: 50, format: "oil", rating: "4.0", inventoryExpiry: "2020-02-27", unitPrice: "11.20", units: "g", terepen: "Humulene" },
+            { name: "Kryptonite", lp: "MM", strain: "Indica", cbd: 3, thc: 30, format: "capsule", rating: "4.1", inventoryExpiry: "2020-01-28", unitPrice: "11.20", units: "g", terepen: "Bisabolol" },
+            { name: "Lions Gate", lp: "MM", strain: "Indica", cbd: 40, thc: 4, format: "oil", rating: "4.2", inventoryExpiry: "2020-01-29", unitPrice: "11.20", units: "g", terepen: "Nerolidol" },
+            { name: "Mango", lp: "MM", strain: "Indica", cbd: 5, thc: 15, format: "topical", rating: "4.3", inventoryExpiry: "2020-02-28", unitPrice: "11.20", units: "g", terepen: "Pinene" },
+            { id: 9, name: "Midnight", lp: "MedReleaf", strain: "Sativa", cbd: "8-12", thc: "6-10", format: "dried", rating: "4.1", inventoryExpiry: "2020-02-27", unitPrice: "11.91", units: "g", terepen: "Caryophyllene" },
         ];
         //Product table hygiene: transform/normalize data into presentation format
         for (var i = 0; i < tabledata.length; i++) {
@@ -324,9 +326,34 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-auto">
+                    <b>Quantity (daily):</b> <span id="hc_gramsPerDay" class="alert-doctor"></span> </br>
+                    <b>Duration (days):</b> <span id="hc_duration" class="alert-doctor"></span>
+                </div>
             </div>
         </div>
     </div>
+
+
+
+    <div id="accordion" role="tablist" aria-multiselectable="true" class="card-collapse">
+        <div class="card card-plain" style="margin-top: 0px; margin-bottom: 0px;">
+            <div class="card-header" role="tab" id="headingOne" style="padding-top: 0px; margin-top: -20px;">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="float: right; margin-top: 0px; font-size: smaller;">
+                    Advanced search
+                    <i class="material-icons" style="top:0px">keyboard_arrow_down</i>
+                </a>
+            </div>
+            <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+                <div class="card-body" style="background-color: #fff;">
+                    Condition 1 [ Select |v]     Condition 2 [ Select |v]     [x] show in-stock only      [clear filters]
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- product list & details -->
     <div id="hc_productListContainer" class="container-fluid fill-height" style="margin-top: 5px; margin-bottom: 0px; margin-left: -10px;">
@@ -392,6 +419,8 @@
         hc_populate("hc_cbdPercent", hcData.Clinical.prescriptions.cbdPercent);
         hc_populate("hc_thcPercent", hcData.Clinical.prescriptions.thcPercent);
         hc_populate("hc_format", hcData.Clinical.prescriptions.format.toString().replace(/,/gi, ", "));
+        hc_populate("hc_gramsPerDay", hcData.Clinical.prescriptions.gramsPerDay);
+        hc_populate("hc_duration", hcData.Clinical.prescriptions.duration);
         if (hcData.Demographics.gender == hcData.Demographics.identifiesAs) {
             document.getElementById("hc_identifiesAsContainer").style = "width: 0px; height: 0px; display:inline-block; overflow: hidden";
         }
@@ -482,9 +511,15 @@
                     { title: "CBD", field: "cbdProgress", formatter: "progress", formatterParams: { legend: true, max: maxCBD, color: "#00a060" } },
                     { title: "THC", field: "thcProgress", formatter: "progress", formatterParams: { legend: true, max: maxTHC } },
                     { title: "Format", field: "format", width: 80 },
+                    { title: "Primary Terepen", field: "terepen" },
                     { title: "Rating", field: "rating", formatter: "star", width: 90 },
                     { title: "In-stock", field: "inStock", width: 90, formatter: "image", formatterParams: { height: 25, width: 15 }, align: "center" },
                     { title: "Price", field: "displayCost", sorter: "date", align: "center" },
+                ],
+                initialSort: [
+                    //documentation is backwards. In reality the primary sort is last in this list. (First in list is the inner-most sort)
+                    { column: "inStock", dir: "desc" },
+                    { column: "lpDisplay", dir: "asc" },
                 ],
                 rowClick: function (e, row) {
                     rowSelectedPL(row.getData().id);
@@ -497,6 +532,8 @@
             //Display tab Order History
             $('.nav-tabs a[href="#rxhx"]').tab('show');
 
+            //Collapse the accordian (Advanced Filters)
+            $('#collapseOne').collapse("hide");
         };
     </script>
 
@@ -557,9 +594,7 @@
 
         //When a product has been selected, and then the order quantity has been 'Add'ed, set the Prescription tab as active and add the product + qty to the prescription
         function addToOrder(qty) {
-        console.log(qty);
-        console.log(typeof qty);
-            if (typeof qty=="undefined") { qty = document.getElementById("hcAddQty").value; }
+            if (typeof qty == "undefined") { qty = document.getElementById("hcAddQty").value; }
             var prodID = hcProductDetails.id;
             var s = "";
             s += "Add [" + qty + "] of ID:" + prodID;
